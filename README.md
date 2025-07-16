@@ -11,6 +11,9 @@ Built with **Spring Boot 3** + **Java 21**
 
 - Scrapes listings with `Jsoup`
 - Local persistence via `users.json` and `cars.json`
+- Approval of new users and user management
+- Configurable notifications per user
+- Configurable price limit and multiple configurable car models
 - Sends Telegram photo + caption on new/updated listings
 - Configurable via `application.yml`
 - CLI-free control via Telegram commands and Swagger-UI
@@ -19,7 +22,7 @@ Built with **Spring Boot 3** + **Java 21**
 
 ## Quickstart
 
-###  Requirements
+### Requirements
 
 - Java 17+
 - Maven
@@ -49,19 +52,18 @@ mvn clean install
 java -DTELEGRAM_BOT_USERNAME={your_borName} -DTELEGRAM_BOT_TOKEN={your_bot_token} -DTELEGRAM_ADMIN_CHAT_ID={admin_chat_id} -jar target/car-notify-0.0.1.jar
 ```
 
-Server will start on port 8080, Swagger-UI is accessible from [here](http://localhost:8080/api/car-notify/swagger-ui/index.html)
+Server will start on port 8080, Swagger-UI is accessible
+from [here](http://localhost:8080/api/car-notify/swagger-ui/index.html)
 
 <details>
   <summary>Instructions for Windows</summary>
     If you use Windows, you are dead to me, these steps are universal and you should have known
 </details>
 
-### Local development
+![arch](docs/swagger.png)
 
-#### create .env file in the directory root with values
+<h3 align="center">Demo</h3>
 
-TELEGRAM_BOT_USERNAME="Your bot"
-
-TELEGRAM_BOT_TOKEN="Your bot token"
-
-TELEGRAM_CLIENT_IDS="Target approved client ids"
+<p align="center">
+  <img src="docs/demo.gif" alt="demo">
+</p>
