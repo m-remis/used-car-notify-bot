@@ -46,12 +46,14 @@ mvn clean install
 ```
 
 ```bash
-java -DTELEGRAM_BOT_USERNAME={your_borName} -DTELEGRAM_BOT_TOKEN={your_bot_token} -DTELEGRAM_ADMIN_CHAT_ID={admin_chat_id} -jar car-notify-0.0.1.jar
+java -DTELEGRAM_BOT_USERNAME={your_borName} -DTELEGRAM_BOT_TOKEN={your_bot_token} -DTELEGRAM_ADMIN_CHAT_ID={admin_chat_id} -jar target/car-notify-0.0.1.jar
 ```
+
+Server will start on port 8080, Swagger-UI is accessible from [here](http://localhost:8080/api/car-notify/swagger-ui/index.html)
 
 <details>
   <summary>Instructions for Windows</summary>
-    If you use Windows, you are dead to me
+    If you use Windows, you are dead to me, these steps are universal and you should have known
 </details>
 
 ### Local development
