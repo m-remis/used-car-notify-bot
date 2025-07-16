@@ -22,6 +22,18 @@ Built with **Spring Boot 3** + **Java 21**
 
 ![arch](docs/car_notif_diagram.svg)
 
+### App
+#### Simple storage using 2 json files
+- on startup, app checks for users.json and cars.json, if it's present, it's content is loaded in memory, each operation that takes place is then performed against records that are in memory and after each action the files are overwritten by the content of the in-memory map, this way you can restart the app all the time but the data stays there
+#### Background job
+- configurable, responsible for scrapping and sending notifications to the users
+
+
+    1. it scrapes data of the listings from the website (based on configurable filter)
+    2. checks against in-memory records, detects which records were added since the last run
+    3. fetches admin-approved users that have notifications enabled
+    4. sends notifications to the target telegram chatIds 
+
 ## Quickstart
 
 ### Requirements
