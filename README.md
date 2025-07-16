@@ -50,7 +50,7 @@ java -DTELEGRAM_BOT_USERNAME={your_borName} -DTELEGRAM_BOT_TOKEN={your_bot_token
 ```
 
 <details>
-  <summary>Instructions are for Windows</summary>
+  <summary>Instructions for Windows</summary>
     If you use Windows, you are dead to me
 </details>
 
