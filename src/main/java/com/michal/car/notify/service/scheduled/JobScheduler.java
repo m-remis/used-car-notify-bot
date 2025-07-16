@@ -29,7 +29,7 @@ public class JobScheduler {
             initialDelayString = "${global-app-props.jobs.initial-delay}"
     )
     public void carNotificationJob() {
-        if (!globalAppProperties.getDisableScraping()) {
+        if (!globalAppProperties.getDisableJob()) {
             LOGGER.info("Executing Car scraping job");
             carWatcherService.scrapeDataAndSend();
         } else {

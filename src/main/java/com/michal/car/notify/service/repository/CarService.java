@@ -2,6 +2,7 @@ package com.michal.car.notify.service.repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.michal.car.notify.service.exception.ApplicationException;
 import com.michal.car.notify.service.model.Car;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -21,18 +23,18 @@ import java.util.stream.Collectors;
  * @author Michal Remis
  */
 @Service
-public class CarRepository {
+public class CarService {
 
     private final ObjectMapper objectMapper;
 
-    private final Map<String, Car> cars = new HashMap<>();
+    private final Map<String, Car> repository = new ConcurrentHashMap<>();
 
-    private static Path targetFilePath;
+    private final Path targetFilePath;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CarRepository.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CarService.class);
 
-    public CarRepository(ObjectMapper objectMapper,
-                         @Value("${car-repo.file-path}") String dataSourceFilePath) {
+    public CarService(ObjectMapper objectMapper,
+                      @Value("${in-memory-repo.car.file-path}") String dataSourceFilePath) {
         this.objectMapper = objectMapper;
         targetFilePath = Paths.get(dataSourceFilePath);
     }
@@ -43,17 +45,17 @@ public class CarRepository {
             LOGGER.info("cars.json found, loading");
             try {
                 Map<String, Car> loaded = objectMapper.readValue(Files.newBufferedReader(targetFilePath), new TypeReference<>() {});
-                cars.putAll(loaded);
-                LOGGER.info("Loaded [{}] cars from cars.json", cars.size());
+                repository.putAll(loaded);
+                LOGGER.info("Loaded [{}] cars from cars.json", repository.size());
             } catch (IOException e) {
-                throw new RuntimeException("Failed to read cars.json", e);
+                throw ApplicationException.of("Failed to read cars.json", e);
             }
         } else {
             try {
                 Files.writeString(targetFilePath, "{}");
                 LOGGER.info("cars.json not found. Created new empty file.");
             } catch (IOException e) {
-                throw new RuntimeException("Failed to create cars.json", e);
+                throw ApplicationException.of("Failed to create cars.json", e);
             }
         }
     }
@@ -65,29 +67,29 @@ public class CarRepository {
                 .collect(Collectors.toMap(Car::id, Function.identity()));
 
         incoming.forEach(fresh -> {
-            Car existing = cars.get(fresh.id());
+            Car existing = repository.get(fresh.id());
             if (existing == null || !existing.equals(fresh)) {
                 newlyAdded.add(fresh);
             }
         });
 
-        cars.clear();
-        cars.putAll(incomingMap);
+        repository.clear();
+        repository.putAll(incomingMap);
 
         overwrite();
         return newlyAdded;
     }
 
     public List<Car> findAll() {
-        return cars.values().stream().toList();
+        return repository.values().stream().toList();
     }
 
     private void overwrite() {
         try {
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(targetFilePath.toFile(), cars);
-            LOGGER.info("cars.json overwritten with [{}] entries.", cars.size());
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(targetFilePath.toFile(), repository);
+            LOGGER.info("cars.json overwritten with [{}] entries.", repository.size());
         } catch (IOException e) {
-            throw new RuntimeException("Failed to overwrite cars.json", e);
+            throw ApplicationException.of("Failed to overwrite cars.json", e);
         }
     }
 }

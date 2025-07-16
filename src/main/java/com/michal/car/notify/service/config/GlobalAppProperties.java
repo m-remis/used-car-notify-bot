@@ -5,8 +5,10 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
-import java.util.Set;
 
+/**
+ * @author Michal Remis
+ */
 @Configuration
 @EnableConfigurationProperties
 @ConfigurationProperties(prefix = "global-app-props")
@@ -16,8 +18,8 @@ public class GlobalAppProperties {
     private String suffixTemplate;
     private List<String> watchCars;
     private Integer upperPrice;
-    private boolean disableScraping;
-    private Set<String> clients;
+    private Boolean disableJob;
+    private String adminChatId;
 
     public String getSuffixTemplate() {
         return suffixTemplate;
@@ -51,31 +53,27 @@ public class GlobalAppProperties {
         this.upperPrice = upperPrice;
     }
 
-    public boolean getDisableScraping() {
-        return disableScraping;
+    public boolean getDisableJob() {
+        return disableJob;
     }
 
-    public void setDisableScraping(boolean disableScraping) {
-        this.disableScraping = disableScraping;
+    public void setDisableJob(Boolean disableJob) {
+        this.disableJob = disableJob;
     }
 
-    public boolean isDisableScraping() {
-        return disableScraping;
+    public String getAdminChatId() {
+        return adminChatId;
     }
 
-    public Set<String> getClients() {
-        return clients;
-    }
-
-    public void setClients(Set<String> clients) {
-        this.clients = clients;
+    public void setAdminChatId(String adminChatId) {
+        this.adminChatId = adminChatId;
     }
 
     @Override
     public String toString() {
         return "GlobalAppProperties{" +
-                "clients=" + clients +
-                ", disableScraping=" + disableScraping +
+                "adminClient=" + adminChatId +
+                ", disableJob=" + disableJob +
                 ", upperPrice=" + upperPrice +
                 ", watchCars=" + watchCars +
                 ", suffixTemplate='" + suffixTemplate + '\'' +

@@ -2,8 +2,20 @@
   "bot": {
     "start": "🟢 Notifikácie spustené, dostaneš upozornenia o nových autách",
     "stop": "🔴 Notifikácie vypnuté, bot ti už nebude posielať správy",
-    "manual": "❓ Dostupné príkazy:\n```\nstart       → aktivuj notifikácie\nstop        → deaktivuj notifikácie\nmanual      → tento zoznam```",
-    "unknown": "🤖 Neznámy príkaz, napíš `manual`",
-    "start-initial-welcome": "👋 Vitaj, tento bot ťa upozorní, keď sa objaví nové auto, ktoré ťa zaujíma\n\nNapíš `start`, aby si zapol notifikácie, alebo `manual` pre zoznam príkazov"
+    "manual": "❓ Dostupné príkazy:\n```\n/zapnut     → aktivuj notifikácie\n/vypnut     → deaktivuj notifikácie\n/manual     → tento zoznam```",
+    "manual-admin": "🛠️ Administrátorské príkazy:\n```\n/approve <chatId>     → schváľ používateľa\n/pending-users        → zobraziť nečakajúcich\n/approved-users       → zobraziť schválených\n/stop-app             → zastaví scraping job\n/zapnut               → aktivuj notifikácie pre seba\n/vypnut               → deaktivuj notifikácie pre seba\n/manual               → tento zoznam```",
+    "unknown": "🤖 Neznámy príkaz, napíš `/manual`",
+    "start-initial-welcome": "👋 Vitaj, tento bot ťa upozorní, keď sa objaví nové auto, ktoré ťa zaujíma\n\nNapíš `/zapnut`, aby si zapol notifikácie, alebo `/manual` pre zoznam príkazov",
+
+    "user-added-unapproved": "❌ Prístup zamietnutý. Kontaktujte administrátora na schválenie",
+    "user-still-unapproved": "❌ Stále čakáte na schválenie. Kontaktujte administrátora",
+    "user-approved-success": "✅ Používateľ {chatId} bol schválený",
+    "user-approved-fail": "❌ Používateľ {chatId} sa nenašiel",
+    "user-approved-invalid": "❌ Neplatný formát chat ID",
+    "user-list-pending-empty": "📭 Žiadni nečakajúci používatelia",
+    "user-list-pending": "🕓 Nečakajúci používatelia:\n{list}",
+    "user-list-approved-empty": "📭 Zatiaľ žiadni schválení používatelia",
+    "user-list-approved": "✅ Schválení používatelia:\n{list}",
+    "stop-app": "🛑 Aplikácia bola zastavená. Scraping sa už nebude vykonávať"
   }
 }

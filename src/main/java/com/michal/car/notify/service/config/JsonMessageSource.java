@@ -12,6 +12,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 
+/**
+ * @author Michal Remis
+ */
 public class JsonMessageSource {
 
     private final Map<String, Map<String, String>> messages = new HashMap<>();

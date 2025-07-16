@@ -1,5 +1,6 @@
 package com.michal.car.notify.service.scraper;
 
+import com.michal.car.notify.service.exception.ApplicationException;
 import com.michal.car.notify.service.model.Car;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +59,7 @@ public class ToyotaWebScraper {
             }
 
         } catch (IOException e) {
-            throw new RuntimeException("Failed to scrape Toyota website", e);
+            throw ApplicationException.of("Failed to scrape Toyota website", e);
         }
 
         LOGGER.info("Found: [{}] cars for model: [{}] and upper price: [{}]", cars.size(), model, upperPrice);

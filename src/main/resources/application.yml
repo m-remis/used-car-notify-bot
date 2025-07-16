@@ -24,8 +24,8 @@ global-app-props:
     - corolla
     - rav4
   upper-price: 15000
-  disable-scraping: false
-  clients: ${TELEGRAM_CLIENT_IDS}
+  disable-job: false
+  admin-chat-id: ${TELEGRAM_ADMIN_CHAT_ID}
   jobs:
     fixed-delay: 30m
     initial-delay: 10m # don't execute on restart
@@ -39,5 +39,8 @@ spring:
     locale: sk
     locale-resolver: fixed
 
-car-repo:
-  file-path: ./cars.json
+in-memory-repo:
+  car:
+    file-path: ./cars.json
+  users:
+    file-path: ./users.json
