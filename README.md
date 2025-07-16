@@ -1,48 +1,64 @@
-# Used Car Notifier
+# 🚗 Used Car Notifier Bot
 
-Watches [usedcars.toyota.sk](https://usedcars.toyota.sk) for new listings (e.g. Corolla, RAV4) and sends Telegram alerts
-with photos and prices.
+Watches [usedcars.toyota.sk](https://usedcars.toyota.sk) for new listings (e.g. **Corolla**, **RAV4**)  
+and sends Telegram alerts with **photos** and **prices**.
 
-Built with **Spring Boot 3** + **Java 21**
+Built with **Spring Boot 3.5.3** and **Java 21**.
 
 ---
 
 ## Features
 
-- Scrapes listings with `Jsoup`
-- Local persistence via `users.json` and `cars.json`
-- Approval of new users and user management
-- Configurable notifications per user
-- Configurable price limit and multiple configurable car models
-- Sends Telegram photo + caption on new/updated listings
-- Configurable via `application.yml`
-- CLI-free control via Telegram commands and Swagger-UI
+-  Scrapes listings with `Jsoup`
+-  In-memory storage backed by `users.json` and `cars.json`
+-  Admin approval and user management
+-  Per-user notification toggle
+-  Configurable price threshold and car models
+-  Sends Telegram photos + captions on new listings
+- ️ Configurable via `application.yml`
+-  No CLI needed – manage everything via **Telegram** and **Swagger UI**
 
 ---
 
+## Architecture
+
 ![arch](docs/car_notif_diagram.svg)
 
-### App
-#### Simple storage using 2 json files
-- on startup, app checks for users.json and cars.json, if it's present, it's content is loaded in memory, each operation that takes place is then performed against records that are in memory and after each action the files are overwritten by the content of the in-memory map, this way you can restart the app all the time but the data stays there
-#### Background job
-- configurable, responsible for scrapping and sending notifications to the users
+---
 
+## 🗂 JSON-Based Persistence
 
-    1. it scrapes data of the listings from the website (based on configurable filter)
-    2. checks against in-memory records, detects which records were added since the last run
-    3. fetches admin-approved users that have notifications enabled
-    4. sends notifications to the target telegram chatIds 
+- On startup, the app loads `users.json` and `cars.json` into memory (if present, otherwise it creates new files automatically)
+- Runtime operations work directly against in-memory maps
+- After each change, the app **overwrites** the respective file
+- This makes the app **stateless** and restart-friendly – no DB required
+
+---
+
+## 🔁 Background Job
+
+A scheduled job (configurable) does all the heavy lifting:
+
+1. Scrapes listings from the site using provided filters (e.g. model, price)
+2. Compares against in-memory records to detect **new entries**
+3. Filters for **approved** users with notifications enabled
+4. Sends a **Telegram message** (caption + image) to each chat ID
+
+---
 
 ## Quickstart
 
 ### Requirements
 
-- Java 17+
+- Java 17 or newer
 - Maven
 - Telegram bot token
-- Telegram bot name
-- Admin Telegram ID (Your regular chat id)
+- Telegram bot username
+- Admin Telegram chat ID (your own Telegram chat ID)
+
+---
+
+### 🛠 How to Run
 
 ### How to run
 
