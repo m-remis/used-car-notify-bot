@@ -41,7 +41,7 @@ cd car-notifier
 ```
 
 ```bash
-git clone https://github.com/yourname/toyota-car-notifier.git
+git clone https://github.com/m-remis/used-car-notify-bot.git
 ```
 
 ```bash
