@@ -75,7 +75,6 @@ public class CarService {
 
         repository.clear();
         repository.putAll(incomingMap);
-
         overwrite();
         return newlyAdded;
     }
