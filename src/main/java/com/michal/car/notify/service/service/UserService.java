@@ -14,7 +14,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -75,16 +77,16 @@ public class UserService {
     }
 
     public void setEnabledNotifications(String chatId, Boolean enabled) {
-        findByChatId(chatId).ifPresent(found -> {
+        findByChatId(chatId).ifPresentOrElse(found -> {
             LOGGER.info("Notifications for chatId [{}] set to [{}]", chatId, enabled);
             found.setNotificationsEnabled(enabled);
-        });
-        overwrite();
+            overwrite();
+        }, () -> LOGGER.info("No user found chatId [{}]", chatId));
     }
 
     public void addNotApprovedUser(String chatId) {
         if (repository.containsKey(chatId)) {
-            LOGGER.info("ChatId [{}] already present", chatId);
+            LOGGER.info("User with chatId [{}] already present", chatId);
         } else {
             LOGGER.info("Adding a new chatId [{}]", chatId);
             repository.putIfAbsent(chatId, new User(chatId, true, false));
@@ -101,7 +103,7 @@ public class UserService {
             LOGGER.info("Setting approved for chatId [{}] to [{}]", chatId, approved);
             found.setApproved(approved);
             overwrite();
-        }, () -> LOGGER.info("ChatId [{}] not found", chatId));
+        }, () -> LOGGER.info("User with chatId [{}] not found", chatId));
     }
 
     public List<User> findAllApprovedWithEnabledNotifications() {
@@ -121,5 +123,4 @@ public class UserService {
             throw ApplicationException.of("Failed to overwrite users.json", e);
         }
     }
-
 }

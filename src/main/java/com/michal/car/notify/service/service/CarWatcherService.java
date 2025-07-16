@@ -23,7 +23,7 @@ public class CarWatcherService {
     private final ToyotaWebScraper toyotaWebScraper;
     private final CarService carService;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ToyotaWebScraper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CarWatcherService.class);
 
     public CarWatcherService(GlobalAppProperties globalAppProperties,
                              TelegramNotifierBot telegramNotifierBot,

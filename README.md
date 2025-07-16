@@ -20,6 +20,8 @@ Built with **Spring Boot 3** + **Java 21**
 
 ---
 
+![arch](docs/car_notif_diagram.svg)
+
 ## Quickstart
 
 ### Requirements
@@ -60,7 +62,7 @@ from [here](http://localhost:8080/api/car-notify/swagger-ui/index.html)
     If you use Windows, you are dead to me, these steps are universal and you should have known
 </details>
 
-![arch](docs/swagger.png)
+![swagger](docs/swagger.png)
 
 <h3 align="center">Demo</h3>
 

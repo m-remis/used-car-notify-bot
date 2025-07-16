@@ -12,8 +12,8 @@
     "user-approved-success": "✅ Používateľ {chatId} bol schválený",
     "user-approved-fail": "❌ Používateľ {chatId} sa nenašiel",
     "user-approved-invalid": "❌ Neplatný formát chat ID",
-    "user-list-pending-empty": "📭 Žiadni nečakajúci používatelia",
-    "user-list-pending": "🕓 Nečakajúci používatelia:\n{list}",
+    "user-list-pending-empty": "📭 Žiadni čakajúci používatelia",
+    "user-list-pending": "🕓 Čakajúci používatelia:\n{list}",
     "user-list-approved-empty": "📭 Zatiaľ žiadni schválení používatelia",
     "user-list-approved": "✅ Schválení používatelia:\n{list}",
     "stop-app": "🛑 Aplikácia bola zastavená, scraping sa už nebude vykonávať"
