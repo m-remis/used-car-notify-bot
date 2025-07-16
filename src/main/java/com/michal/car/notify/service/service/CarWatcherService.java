@@ -3,8 +3,6 @@ package com.michal.car.notify.service.service;
 import com.michal.car.notify.service.bot.TelegramNotifierBot;
 import com.michal.car.notify.service.config.GlobalAppProperties;
 import com.michal.car.notify.service.model.Car;
-import com.michal.car.notify.service.repository.CarService;
-import com.michal.car.notify.service.repository.UserService;
 import com.michal.car.notify.service.scraper.ToyotaWebScraper;
 import com.michal.car.notify.service.util.MessageFormatter;
 import org.slf4j.Logger;

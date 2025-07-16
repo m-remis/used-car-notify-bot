@@ -1,4 +1,4 @@
-package com.michal.car.notify.service.repository;
+package com.michal.car.notify.service.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

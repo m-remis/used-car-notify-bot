@@ -3,7 +3,7 @@ package com.michal.car.notify.service.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.michal.car.notify.service.bot.TelegramNotifierBot;
-import com.michal.car.notify.service.repository.UserService;
+import com.michal.car.notify.service.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

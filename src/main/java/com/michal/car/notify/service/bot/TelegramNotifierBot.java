@@ -3,7 +3,7 @@ package com.michal.car.notify.service.bot;
 import com.michal.car.notify.service.config.GlobalAppProperties;
 import com.michal.car.notify.service.config.JsonMessageSource;
 import com.michal.car.notify.service.model.User;
-import com.michal.car.notify.service.repository.UserService;
+import com.michal.car.notify.service.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
