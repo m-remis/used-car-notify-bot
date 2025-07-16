@@ -7,8 +7,8 @@
     "unknown": "🤖 Neznámy príkaz, napíš `/manual`",
     "start-initial-welcome": "👋 Vitaj, tento bot ťa upozorní, keď sa objaví nové auto, ktoré ťa zaujíma\n\nNapíš `/zapnut`, aby si zapol notifikácie, alebo `/manual` pre zoznam príkazov",
 
-    "user-added-unapproved": "❌ Prístup zamietnutý. Kontaktujte administrátora na schválenie",
-    "user-still-unapproved": "❌ Stále čakáte na schválenie. Kontaktujte administrátora",
+    "user-added-unapproved": "❌ Prístup zamietnutý, kontaktujte administrátora na schválenie",
+    "user-still-unapproved": "❌ Stále čakáte na schválenie, kontaktujte administrátora",
     "user-approved-success": "✅ Používateľ {chatId} bol schválený",
     "user-approved-fail": "❌ Používateľ {chatId} sa nenašiel",
     "user-approved-invalid": "❌ Neplatný formát chat ID",
@@ -16,6 +16,6 @@
     "user-list-pending": "🕓 Nečakajúci používatelia:\n{list}",
     "user-list-approved-empty": "📭 Zatiaľ žiadni schválení používatelia",
     "user-list-approved": "✅ Schválení používatelia:\n{list}",
-    "stop-app": "🛑 Aplikácia bola zastavená. Scraping sa už nebude vykonávať"
+    "stop-app": "🛑 Aplikácia bola zastavená, scraping sa už nebude vykonávať"
   }
 }
