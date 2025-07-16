@@ -1,0 +1,43 @@
+server:
+  servlet:
+    context-path: /api/car-notify
+  port: 8080
+
+application:
+  name: Car notify service
+  desc: Used car web scraper
+
+developer:
+  info:
+    name: Michal Remis
+    linked-in: https://www.linkedin.com/in/michal-remis/
+
+telegrambots:
+  bots:
+    - username: ${TELEGRAM_BOT_USERNAME}
+      token: ${TELEGRAM_BOT_TOKEN}
+
+global-app-props:
+  base-url: https://usedcars.toyota.sk
+  suffix-template: /ponuky/price-to/{UPPER_PRICE}/brand/toyota/model/{MODEL}
+  watch-cars:
+    - corolla
+    - rav4
+  upper-price: 15000
+  disable-scraping: false
+  clients: ${TELEGRAM_CLIENT_IDS}
+  jobs:
+    fixed-delay: 30m
+    initial-delay: 10m # don't execute on restart
+
+spring:
+  messages:
+    basename: messages
+    fallback-to-system-locale: true
+    encoding: UTF-8
+  web:
+    locale: sk
+    locale-resolver: fixed
+
+car-repo:
+  file-path: ./cars.json

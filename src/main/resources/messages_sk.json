@@ -1,0 +1,9 @@
+{
+  "bot": {
+    "start": "🟢 Notifikácie spustené, dostaneš upozornenia o nových autách",
+    "stop": "🔴 Notifikácie vypnuté, bot ti už nebude posielať správy",
+    "manual": "❓ Dostupné príkazy:\n```\nstart       → aktivuj notifikácie\nstop        → deaktivuj notifikácie\nmanual      → tento zoznam```",
+    "unknown": "🤖 Neznámy príkaz, napíš `manual`",
+    "start-initial-welcome": "👋 Vitaj, tento bot ťa upozorní, keď sa objaví nové auto, ktoré ťa zaujíma\n\nNapíš `start`, aby si zapol notifikácie, alebo `manual` pre zoznam príkazov"
+  }
+}
