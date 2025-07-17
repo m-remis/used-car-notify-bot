@@ -97,3 +97,30 @@ from [here](http://localhost:8080/api/car-notify/swagger-ui/index.html)
 <p align="center">
   <img src="docs/demo.gif" alt="demo">
 </p>
+
+##  Potential Upgrades & TODOs
+
+Looking ahead, here are some ideas for improvements and refactoring:
+
+### Architecture & Job Separation
+- **Split the background workflow into two jobs**:
+    - **Job A**: Scrapes and stores car data
+    - **Job B**: Reads stored data, filters new listings, and sends notifications  
+      This enables clearer separation of concerns and better scalability (e.g. retry Task B independently).
+
+### Per-User Notification Tracking
+- Persist **timestamp** of the last notification sent to each user (e.g., `lastNotifiedAt`).
+- Allows tracking and helps prevent duplicate notifications if the job is re-run forcefully manually.
+
+### User-Centric Filters
+- Let users set **their own car model and price preferences**, instead of a global filter.
+
+### User Interface
+- Build a minimal React / Angular UI to manage users and preferences visually.
+
+### Docker Container
+- Package everything self-contained, along with a docker-compose.yml for volume-backed .json files.
+
+### Webhook Support — switch from polling to webhook model - absolutely not
+- This thing runs 24/7 on [redneck 140€ undervolted Thinkpad t480](docs/chonk_pad.png) with upgraded cpu cooler from Aliexpress, 32gb dual-channel ram and clocks set to 800mhz without the fans ever spinning
+
