@@ -1,7 +1,16 @@
 package com.michal.car.notify.service.model;
 
+import java.time.Instant;
+
 /**
  * @author Michal Remis
  */
-public record Car(String id, String title, String url, String photoUrl, String price) {
+public class Car {
+
+    private String id;
+    private String title;
+    private String url;
+    private String photoUrl;
+    private String price;
+    private Instant createdAt;
 }

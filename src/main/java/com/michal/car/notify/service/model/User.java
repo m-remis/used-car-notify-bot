@@ -1,6 +1,8 @@
 package com.michal.car.notify.service.model;
 
+import java.time.Instant;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author Michal Remis
@@ -10,6 +12,9 @@ public class User {
     private String chatId;
     private Boolean notificationsEnabled;
     private Boolean isApproved;
+    private Instant lastNotificationReceivedAt;
+    private Set<String> watchedCardModel;
+    private Integer upperPriceLimit;
 
     public User(String chatId, Boolean notificationsEnabled, Boolean isApproved) {
         this.chatId = chatId;
@@ -60,6 +65,9 @@ public class User {
                 "chatId='" + chatId + '\'' +
                 ", notificationsEnabled=" + notificationsEnabled +
                 ", isApproved=" + isApproved +
+                ", lastNotificationReceivedAt=" + lastNotificationReceivedAt +
+                ", watchedCardModel=" + watchedCardModel +
+                ", upperPriceLimit=" + upperPriceLimit +
                 '}';
     }
 }
