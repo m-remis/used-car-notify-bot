@@ -12,14 +12,22 @@ public class User {
     private String chatId;
     private Boolean notificationsEnabled;
     private Boolean isApproved;
-    private Instant lastNotificationReceivedAt;
-    private Set<String> watchedCardModel;
+    private Set<String> watchForModels;
     private Integer upperPriceLimit;
+    private Instant lastNotificationReceivedAt;
 
-    public User(String chatId, Boolean notificationsEnabled, Boolean isApproved) {
+    public User(String chatId,
+                Boolean notificationsEnabled,
+                Boolean isApproved,
+                Integer upperPriceLimit,
+                Set<String> watchForModels,
+                Instant lastNotificationReceivedAt) {
         this.chatId = chatId;
         this.isApproved = isApproved;
         this.notificationsEnabled = notificationsEnabled;
+        this.watchForModels = watchForModels;
+        this.upperPriceLimit = upperPriceLimit;
+        this.lastNotificationReceivedAt = lastNotificationReceivedAt;
     }
 
     public String getChatId() {
@@ -46,6 +54,30 @@ public class User {
         isApproved = approved;
     }
 
+    public Set<String> getWatchForModels() {
+        return watchForModels;
+    }
+
+    public void setWatchForModels(Set<String> watchForModels) {
+        this.watchForModels = watchForModels;
+    }
+
+    public Integer getUpperPriceLimit() {
+        return upperPriceLimit;
+    }
+
+    public void setUpperPriceLimit(Integer upperPriceLimit) {
+        this.upperPriceLimit = upperPriceLimit;
+    }
+
+    public Instant getLastNotificationReceivedAt() {
+        return lastNotificationReceivedAt;
+    }
+
+    public void setLastNotificationReceivedAt(Instant lastNotificationReceivedAt) {
+        this.lastNotificationReceivedAt = lastNotificationReceivedAt;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -65,9 +97,9 @@ public class User {
                 "chatId='" + chatId + '\'' +
                 ", notificationsEnabled=" + notificationsEnabled +
                 ", isApproved=" + isApproved +
-                ", lastNotificationReceivedAt=" + lastNotificationReceivedAt +
-                ", watchedCardModel=" + watchedCardModel +
+                ", watchForModels=" + watchForModels +
                 ", upperPriceLimit=" + upperPriceLimit +
+                ", lastNotificationReceivedAt=" + lastNotificationReceivedAt +
                 '}';
     }
 }

@@ -1,8 +1,9 @@
-package com.michal.car.notify.service.bot;
+package com.michal.car.notify.service.telegram;
 
 import com.michal.car.notify.service.config.GlobalAppProperties;
 import com.michal.car.notify.service.config.JsonMessageSource;
 import com.michal.car.notify.service.model.User;
+import com.michal.car.notify.service.service.ApprovedCarModelsService;
 import com.michal.car.notify.service.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +13,10 @@ import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -25,6 +28,7 @@ public class TelegramNotifierBot extends TelegramLongPollingBot {
     private final UserService userService;
     private final JsonMessageSource messageSource;
     private final GlobalAppProperties globalAppProperties;
+    private final ApprovedCarModelsService approvedCarModelsService;
 
     private static final String PARSE_MODE_V2 = "MarkdownV2";
     private static final String PARSE_MODE_V1 = "Markdown";
@@ -35,12 +39,14 @@ public class TelegramNotifierBot extends TelegramLongPollingBot {
                                String botToken,
                                UserService userService,
                                GlobalAppProperties globalAppProperties,
+                               ApprovedCarModelsService approvedCarModelsService,
                                JsonMessageSource messageSource) {
         super(botToken);
         this.botUsername = botUsername;
         this.userService = userService;
         this.messageSource = messageSource;
         this.globalAppProperties = globalAppProperties;
+        this.approvedCarModelsService = approvedCarModelsService;
     }
 
     @Override
@@ -78,6 +84,43 @@ public class TelegramNotifierBot extends TelegramLongPollingBot {
     }
 
     private void handleUserRequest(String chatId, String prompt) {
+
+        if (prompt.startsWith("/nastav-cenu")) {
+            String rawPrice = prompt.substring("/nastav-cenu ".length()).trim();
+
+            if (rawPrice.isEmpty() || !rawPrice.matches("\\d+")) {
+                sendText(chatId, messageSource.get("user-set-price-failure"));
+                return;
+            }
+
+            int price = Integer.parseInt(rawPrice);
+            userService.setUpperPriceLimitForUser(chatId, price);
+
+            sendText(chatId, messageSource.get("user-set-price-success").replace("{configuredPrice}", String.valueOf(price)));
+            return;
+        }
+
+        if (prompt.startsWith("/nastav-modely")) {
+            String payload = prompt.substring("/nastav-modely ".length()).trim();
+
+            Set<String> requestedModels = Arrays.stream(payload.split("\\s+"))
+                    .map(String::toLowerCase)
+                    .collect(Collectors.toSet());
+
+            Set<String> invalidModels = requestedModels.stream()
+                    .filter(model -> !approvedCarModelsService.isApprovedModel(model))
+                    .collect(Collectors.toSet());
+
+            if (!invalidModels.isEmpty()) {
+                sendText(chatId, messageSource.get("user-set-car-model-failure").replace("{invalidCars}", String.join(", ", invalidModels)));
+                return;
+            }
+
+            userService.setWatchedCarModelsForUser(chatId, requestedModels);
+
+            sendText(chatId, messageSource.get("user-set-car-model-success").replace("{configuredCars}", String.join(", ", requestedModels)));
+            return;
+        }
 
         switch (prompt) {
             case "/start" -> sendText(chatId, messageSource.get("start-initial-welcome"));

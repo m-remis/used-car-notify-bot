@@ -2,7 +2,7 @@
   "bot": {
     "start": "🟢 Notifikácie spustené, dostaneš upozornenia o nových autách",
     "stop": "🔴 Notifikácie vypnuté, bot ti už nebude posielať správy",
-    "manual": "❓ Dostupné príkazy:\n```\n/zapnut     → aktivuj notifikácie\n/vypnut     → deaktivuj notifikácie\n/manual     → tento zoznam```",
+    "manual": "❓ Dostupné príkazy:\n```\n/zapnut         → aktivuj notifikácie\n/vypnut         → deaktivuj notifikácie\n/manual         → tento zoznam\n/nastav-modely  → uprav sledované modely\n/nastav-cenu    → nastav hornú hranicu ceny```",
     "manual-admin": "🛠️ Administrátorské príkazy:\n```\n/approve <chatId>     → schváľ používateľa\n/pending-users        → zobraziť nečakajúcich\n/approved-users       → zobraziť schválených\n/stop-app             → zastaví scraping job\n/zapnut               → aktivuj notifikácie pre seba\n/vypnut               → deaktivuj notifikácie pre seba\n/manual               → tento zoznam```",
     "unknown": "🤖 Neznámy príkaz, napíš `/manual`",
     "start-initial-welcome": "👋 Vitaj, tento bot ťa upozorní, keď sa objaví nové auto, ktoré ťa zaujíma\n\nNapíš `/zapnut`, aby si zapol notifikácie, alebo `/manual` pre zoznam príkazov",
@@ -16,6 +16,12 @@
     "user-list-pending": "🕓 Čakajúci používatelia:\n{list}",
     "user-list-approved-empty": "📭 Zatiaľ žiadni schválení používatelia",
     "user-list-approved": "✅ Schválení používatelia:\n{list}",
-    "stop-app": "🛑 Aplikácia bola zastavená, scraping sa už nebude vykonávať"
+    "stop-app": "🛑 Aplikácia bola zastavená, scraping sa už nebude vykonávať",
+
+    "user-set-price-success": "✅ Horná hranica ceny bola nastavená na {configuredPrice} €",
+    "user-set-price-failure": "❌ Zadaj platnú cenu ako celé číslo, napr `/nastav-cenu 14500`",
+
+    "user-set-car-model-success": "✅ Sledujem tieto modely: {configuredCars}",
+    "user-set-car-model-failure": "❌ Neznáme modely: {invalidCars}"
   }
 }

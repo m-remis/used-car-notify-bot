@@ -1,6 +1,6 @@
 package com.michal.car.notify.service.util;
 
-import com.michal.car.notify.service.model.Car;
+import com.michal.car.notify.service.model.FoundCar;
 
 /**
  * @author Michal Remis
@@ -19,7 +19,7 @@ public class  MessageFormatter {
         // not to be instantiated
     }
 
-    public static String formatCarMessage(Car car) {
+    public static String formatCarMessage(FoundCar car) {
         return MESSAGE_TEMPLATE.formatted(car.title(), car.url(), car.price());
     }
 }

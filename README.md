@@ -50,7 +50,7 @@ A scheduled job (configurable) does all the heavy lifting:
 
 ### Requirements
 
-- Java 17 or newer
+- Java 21 or newer
 - Maven
 - Telegram bot token
 - Telegram bot username
@@ -122,5 +122,5 @@ Looking ahead, here are some ideas for improvements and refactoring:
 - Package everything self-contained, along with a docker-compose.yml for volume-backed .json files.
 
 ### Webhook Support — switch from polling to webhook model - absolutely not
-- This thing runs 24/7 on [redneck 140€ undervolted Thinkpad t480](docs/chonk_pad.png) with upgraded cpu cooler from Aliexpress, 32gb dual-channel ram and clocks set to 800mhz without the fans ever spinning
+- This thing runs 24/7 on [redneck 140€ undervolted Thinkpad t480](docs/chonk_pad.png) with upgraded cpu cooler from Aliexpress, 32gb dual-channel ram and clocks set to 800mhz without the fans ever spinning because I'm chill like that
 

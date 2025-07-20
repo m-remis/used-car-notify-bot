@@ -14,10 +14,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.time.Instant;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * @author Michal Remis
@@ -76,12 +76,30 @@ public class UserService {
         return Optional.ofNullable(repository.get(chatId));
     }
 
+    public User getOneByChatId(String chatId) {
+        return Optional.ofNullable(repository.get(chatId))
+                .orElseThrow(() -> ApplicationException.of(String.format("Could not find user with chat id: [%s]", chatId)));
+    }
+
     public void setEnabledNotifications(String chatId, Boolean enabled) {
-        findByChatId(chatId).ifPresentOrElse(found -> {
-            LOGGER.info("Notifications for chatId [{}] set to [{}]", chatId, enabled);
-            found.setNotificationsEnabled(enabled);
-            overwrite();
-        }, () -> LOGGER.info("No user found chatId [{}]", chatId));
+        final User found = getOneByChatId(chatId);
+        LOGGER.info("Notifications for chatId [{}] set to [{}]", chatId, enabled);
+        found.setNotificationsEnabled(enabled);
+        overwrite();
+    }
+
+    public void setWatchedCarModelsForUser(String chatId, Set<String> carModels) {
+        final User found = getOneByChatId(chatId);
+        LOGGER.info("Watched car models for chatId [{}] set to [{}]", chatId, carModels);
+        found.setWatchForModels(carModels);
+        overwrite();
+    }
+
+    public void setUpperPriceLimitForUser(String chatId, Integer upperPriceLimit) {
+        final User found = getOneByChatId(chatId);
+        LOGGER.info("Upper price for chatId [{}] set to [{}]", chatId, upperPriceLimit);
+        found.setUpperPriceLimit(upperPriceLimit);
+        overwrite();
     }
 
     public void addNotApprovedUser(String chatId) {
@@ -89,7 +107,17 @@ public class UserService {
             LOGGER.info("User with chatId [{}] already present", chatId);
         } else {
             LOGGER.info("Adding a new chatId [{}]", chatId);
-            repository.putIfAbsent(chatId, new User(chatId, true, false));
+            repository.putIfAbsent(
+                    chatId,
+                    new User(
+                            chatId,
+                            true,
+                            false,
+                            0,
+                            new HashSet<>(),
+                            Instant.EPOCH
+                    )
+            );
             overwrite();
         }
     }
@@ -99,11 +127,10 @@ public class UserService {
     }
 
     public void setApprovedForUser(String chatId, Boolean approved) {
-        findByChatId(chatId).ifPresentOrElse(found -> {
-            LOGGER.info("Setting approved for chatId [{}] to [{}]", chatId, approved);
-            found.setApproved(approved);
-            overwrite();
-        }, () -> LOGGER.info("User with chatId [{}] not found", chatId));
+        final User found = getOneByChatId(chatId);
+        LOGGER.info("Setting approved for chatId [{}] to [{}]", chatId, approved);
+        found.setApproved(approved);
+        overwrite();
     }
 
     public List<User> findAllApprovedWithEnabledNotifications() {
@@ -114,13 +141,25 @@ public class UserService {
         return findAll().stream().filter(User::getApproved).toList();
     }
 
+    public Integer getMaxPrice() {
+        return findAll().stream().max(Comparator.comparing(User::getUpperPriceLimit)).get().getUpperPriceLimit();
+    }
+
+    public Set<String> getAllDistinctWatchedCarModels() {
+        return repository.values().stream()
+                .map(User::getWatchForModels)
+                .filter(Objects::nonNull)
+                .flatMap(Set::stream)
+                .collect(Collectors.toSet());
+    }
+
     private void overwrite() {
-        LOGGER.info("Commiting changes to users.json file");
+        LOGGER.info("Commiting changes to [{}] file", targetFilePath.getFileName());
         try {
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(targetFilePath.toFile(), repository);
-            LOGGER.info("users.json overwritten with [{}] entries.", repository.size());
+            LOGGER.info("[{}] overwritten with [{}] entries.", targetFilePath.getFileName(), repository.size());
         } catch (IOException e) {
-            throw ApplicationException.of("Failed to overwrite users.json", e);
+            throw ApplicationException.of(String.format("Failed to overwrite [%s]", targetFilePath.getFileName()), e);
         }
     }
 }

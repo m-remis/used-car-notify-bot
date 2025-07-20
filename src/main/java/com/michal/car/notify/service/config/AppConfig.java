@@ -2,7 +2,8 @@ package com.michal.car.notify.service.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
-import com.michal.car.notify.service.bot.TelegramNotifierBot;
+import com.michal.car.notify.service.service.ApprovedCarModelsService;
+import com.michal.car.notify.service.telegram.TelegramNotifierBot;
 import com.michal.car.notify.service.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -42,9 +43,17 @@ public class AppConfig {
             GlobalAppProperties globalAppProperties,
             TelegramBotsApi botsApi,
             JsonMessageSource messageSource,
-            UserService userService
+            UserService userService,
+            ApprovedCarModelsService approvedCarModelsService
     ) throws TelegramApiException {
-        TelegramNotifierBot bot = new TelegramNotifierBot(botUsername, botToken, userService, globalAppProperties, messageSource);
+        TelegramNotifierBot bot = new TelegramNotifierBot(
+                botUsername,
+                botToken,
+                userService,
+                globalAppProperties,
+                approvedCarModelsService,
+                messageSource
+        );
         botsApi.registerBot(bot);
         return bot;
     }

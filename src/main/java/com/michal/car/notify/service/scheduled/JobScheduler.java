@@ -1,7 +1,7 @@
 package com.michal.car.notify.service.scheduled;
 
 import com.michal.car.notify.service.config.GlobalAppProperties;
-import com.michal.car.notify.service.service.CarWatcherService;
+import com.michal.car.notify.service.service.Coordinator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,32 +17,53 @@ public class JobScheduler {
     private static final Logger LOGGER = LoggerFactory.getLogger(JobScheduler.class);
 
     private final GlobalAppProperties globalAppProperties;
-    private final CarWatcherService carWatcherService;
+    private final Coordinator coordinator;
 
     public JobScheduler(GlobalAppProperties globalAppProperties,
-                        CarWatcherService carWatcherService) {
+                        Coordinator coordinator) {
         this.globalAppProperties = globalAppProperties;
-        this.carWatcherService = carWatcherService;
+        this.coordinator = coordinator;
     }
 
     @Scheduled(
-            fixedDelayString = "${global-app-props.jobs.fixed-delay}",
-            initialDelayString = "${global-app-props.jobs.initial-delay}"
+            fixedDelayString = "${global-app-props.jobs.car-scraping.fixed-delay}",
+            initialDelayString = "${global-app-props.jobs.car-scraping.initial-delay}"
     )
-    public void carNotificationJob() {
+    public void carScrapperJob() {
         if (!globalAppProperties.getDisableJob()) {
 
             StopWatch stopWatch = new StopWatch();
-            stopWatch.start("Car scraping notification job");
+            stopWatch.start("Car scraping job");
 
             LOGGER.info("Executing Car scraping job...");
-            carWatcherService.scrapeDataAndSend();
+            coordinator.scrapeCarData();
 
             stopWatch.stop();
-            LOGGER.info("Car scraping notification job finished. Elapsed time: [{}] seconds", stopWatch.getTotalTimeSeconds());
+            LOGGER.info("Car scraping job finished. Elapsed time: [{}] seconds", stopWatch.getTotalTimeSeconds());
 
         } else {
-            LOGGER.info("Car scraping job is disabled");
+            LOGGER.info("Jobs are disabled");
+        }
+    }
+
+    @Scheduled(
+            fixedDelayString = "${global-app-props.jobs.user-notification.fixed-delay}",
+            initialDelayString = "${global-app-props.jobs.user-notification.initial-delay}"
+    )
+    public void userNotificationJob() {
+        if (!globalAppProperties.getDisableJob()) {
+
+            StopWatch stopWatch = new StopWatch();
+            stopWatch.start("User notification job");
+
+            LOGGER.info("Executing user notification job...");
+            coordinator.sendNotificationsToUsers();
+
+            stopWatch.stop();
+            LOGGER.info("User notification job finished. Elapsed time: [{}] seconds", stopWatch.getTotalTimeSeconds());
+
+        } else {
+            LOGGER.info("Jobs are disabled");
         }
     }
 }

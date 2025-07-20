@@ -9,7 +9,15 @@ public class ApplicationException extends RuntimeException {
         super(message, cause);
     }
 
+    private ApplicationException(String message) {
+        super(message);
+    }
+
     public static ApplicationException of(String message, Throwable cause) {
         return new ApplicationException(message, cause);
+    }
+
+    public static ApplicationException of(String message) {
+        return new ApplicationException(message);
     }
 }
