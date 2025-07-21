@@ -35,7 +35,7 @@ Built with **Spring Boot 3.5.3** and **Java 21**.
 
 ---
 
-## 🔁 Background Job
+## 🔁 Background Jobs
 
 A scheduled job (configurable) does all the heavy lifting:
 
@@ -43,6 +43,19 @@ A scheduled job (configurable) does all the heavy lifting:
 2. Compares against in-memory records to detect **new entries**
 3. Filters for **approved** users with notifications enabled
 4. Sends a **Telegram message** (caption + image) to each chat ID
+
+### Architecture & Job Separation
+- **Split the background workflow into two jobs**:
+    - **Job A**: Scrapes and stores car data
+    - **Job B**: Reads stored data, filters new listings, and sends notifications  
+      This enables clearer separation of concerns and better scalability (e.g. retry Task B independently).
+
+### Per-User Notification Tracking
+- Persist **timestamp** of the last notification sent to each user (e.g., `lastNotifiedAt`).
+- Allows tracking and helps prevent duplicate notifications if the job is re-run forcefully manually.
+
+### User-Centric Filters
+- Let users set **their own car model and price preferences**, instead of a global filter.
 
 ---
 
@@ -101,19 +114,6 @@ from [here](http://localhost:8080/api/car-notify/swagger-ui/index.html)
 ##  Potential Upgrades & TODOs
 
 Looking ahead, here are some ideas for improvements and refactoring:
-
-### Architecture & Job Separation
-- **Split the background workflow into two jobs**:
-    - **Job A**: Scrapes and stores car data
-    - **Job B**: Reads stored data, filters new listings, and sends notifications  
-      This enables clearer separation of concerns and better scalability (e.g. retry Task B independently).
-
-### Per-User Notification Tracking
-- Persist **timestamp** of the last notification sent to each user (e.g., `lastNotifiedAt`).
-- Allows tracking and helps prevent duplicate notifications if the job is re-run forcefully manually.
-
-### User-Centric Filters
-- Let users set **their own car model and price preferences**, instead of a global filter.
 
 ### User Interface
 - Build a minimal React / Angular UI to manage users and preferences visually.

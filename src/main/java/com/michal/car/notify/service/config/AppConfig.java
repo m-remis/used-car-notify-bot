@@ -3,8 +3,8 @@ package com.michal.car.notify.service.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.michal.car.notify.service.service.ApprovedCarModelsService;
-import com.michal.car.notify.service.telegram.TelegramNotifierBot;
 import com.michal.car.notify.service.service.UserService;
+import com.michal.car.notify.service.telegram.TelegramNotifierBot;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,8 +38,8 @@ public class AppConfig {
 
     @Bean
     public TelegramNotifierBot telegramNotifierBot(
-            @Value("${telegrambots.bots[0].username}") String botUsername,
-            @Value("${telegrambots.bots[0].token}") String botToken,
+            @Value("${telegrambots.username}") String botUsername,
+            @Value("${telegrambots.token}") String botToken,
             GlobalAppProperties globalAppProperties,
             TelegramBotsApi botsApi,
             JsonMessageSource messageSource,

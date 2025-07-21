@@ -10,10 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,42 +19,20 @@ import java.util.stream.Collectors;
  * @author Michal Remis
  */
 @Service
-public class UserService {
-
-    private final ObjectMapper objectMapper;
+public class UserService extends InMemoryBaseRepository<Map<String, User>> {
 
     private final Map<String, User> repository = new ConcurrentHashMap<>();
-
-    private final Path targetFilePath;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     public UserService(ObjectMapper objectMapper,
                        @Value("${in-memory-repo.users.file-path}") String dataSourceFilePath) {
-        this.objectMapper = objectMapper;
-        targetFilePath = Paths.get(dataSourceFilePath);
+        super(objectMapper, dataSourceFilePath, new TypeReference<>() {}, LOGGER);
     }
 
     @PostConstruct
-    private void init() {
-        if (Files.exists(targetFilePath)) {
-            LOGGER.info("users.json found, loading");
-            try {
-                Map<String, User> loaded = objectMapper.readValue(Files.newBufferedReader(targetFilePath), new TypeReference<>() {
-                });
-                repository.putAll(loaded);
-                LOGGER.info("Loaded [{}] users from users.json", repository.size());
-            } catch (IOException e) {
-                throw ApplicationException.of("Failed to read users.json", e);
-            }
-        } else {
-            try {
-                Files.writeString(targetFilePath, "{}");
-                LOGGER.info("users.json not found. Created new empty file.");
-            } catch (IOException e) {
-                throw ApplicationException.of("Failed to create users.json", e);
-            }
-        }
+    private void postConstruct() {
+        super.loadData();
     }
 
     public List<User> findAll() {
@@ -68,7 +42,7 @@ public class UserService {
     public List<User> overwriteAllUsers(List<User> users) {
         repository.clear();
         users.forEach(user -> repository.putIfAbsent(user.getChatId(), user));
-        overwrite();
+        super.overwriteData();
         return findAll();
     }
 
@@ -85,21 +59,21 @@ public class UserService {
         final User found = getOneByChatId(chatId);
         LOGGER.info("Notifications for chatId [{}] set to [{}]", chatId, enabled);
         found.setNotificationsEnabled(enabled);
-        overwrite();
+        super.overwriteData();
     }
 
     public void setWatchedCarModelsForUser(String chatId, Set<String> carModels) {
         final User found = getOneByChatId(chatId);
         LOGGER.info("Watched car models for chatId [{}] set to [{}]", chatId, carModels);
         found.setWatchForModels(carModels);
-        overwrite();
+        super.overwriteData();
     }
 
     public void setUpperPriceLimitForUser(String chatId, Integer upperPriceLimit) {
         final User found = getOneByChatId(chatId);
         LOGGER.info("Upper price for chatId [{}] set to [{}]", chatId, upperPriceLimit);
         found.setUpperPriceLimit(upperPriceLimit);
-        overwrite();
+        super.overwriteData();
     }
 
     public void addNotApprovedUser(String chatId) {
@@ -118,7 +92,7 @@ public class UserService {
                             Instant.EPOCH
                     )
             );
-            overwrite();
+            super.overwriteData();
         }
     }
 
@@ -130,7 +104,7 @@ public class UserService {
         final User found = getOneByChatId(chatId);
         LOGGER.info("Setting approved for chatId [{}] to [{}]", chatId, approved);
         found.setApproved(approved);
-        overwrite();
+        super.overwriteData();
     }
 
     public List<User> findAllApprovedWithEnabledNotifications() {
@@ -153,13 +127,13 @@ public class UserService {
                 .collect(Collectors.toSet());
     }
 
-    private void overwrite() {
-        LOGGER.info("Commiting changes to [{}] file", targetFilePath.getFileName());
-        try {
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(targetFilePath.toFile(), repository);
-            LOGGER.info("[{}] overwritten with [{}] entries.", targetFilePath.getFileName(), repository.size());
-        } catch (IOException e) {
-            throw ApplicationException.of(String.format("Failed to overwrite [%s]", targetFilePath.getFileName()), e);
-        }
+    @Override
+    protected Map<String, User> createEmptyInstance() {
+        return Map.of();
+    }
+
+    @Override
+    protected int sizeOf(Map<String, User> repo) {
+        return repo.size();
     }
 }

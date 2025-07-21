@@ -13,9 +13,8 @@ developer:
     linked-in: https://www.linkedin.com/in/michal-remis/
 
 telegrambots:
-  bots:
-    - username: ${TELEGRAM_BOT_USERNAME}
-      token: ${TELEGRAM_BOT_TOKEN}
+    username: ${TELEGRAM_BOT_USERNAME}
+    token: ${TELEGRAM_BOT_TOKEN}
 
 global-app-props:
   base-url: https://usedcars.toyota.sk
@@ -48,4 +47,4 @@ in-memory-repo:
   users:
     file-path: ./data/users.json
   known-car-models:
-    file-path: ./data/known-car-models.json
+    file-path: ./data/allowed-car-models.json
